@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { IoIosNotifications } from "react-icons/io";
+import useFirestore from "../Hooks/useFirestore";
 
 const Data = () => {
   const { user } = useAuth0();
+  const { res, uploadTask, loading, getData } = useFirestore();
+
+  useEffect(() => {
+    getData(user.nickname);
+    // console.log(res);
+  }, []);
 
   return (
     <div className="w-[80%] mx-auto my-20">
