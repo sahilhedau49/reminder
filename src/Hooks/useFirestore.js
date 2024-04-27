@@ -38,7 +38,7 @@ const useFirestore = () => {
   const getData = async (id) => {
     try {
       const q = query(
-        collection(db, "userData", id),
+        collection(db, "userData", id, "data"),
         orderBy("createdAt", "desc")
       );
       onSnapshot(q, (querySnapshot) => {
