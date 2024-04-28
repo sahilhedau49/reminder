@@ -3,6 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { IoIosNotifications } from "react-icons/io";
 import useFirestore from "../Hooks/useFirestore";
 import Form from "./Form";
+import TaskCard from "./TaskCard";
 
 const Data = () => {
   const { user } = useAuth0();
@@ -17,8 +18,7 @@ const Data = () => {
     <div className="w-[80%] mx-auto my-20">
       <div className="mb-10 flex justify-between">
         <p className="text-4xl font-semibold">
-          <span className="text-gray-700 font-normal">Welcome</span>,{" "}
-          {user.nickname}
+          <span className="text-gray-700 font-normal">Welcome</span>, {user.nickname}
         </p>
         <p className="text-4xl font-semibold content-center cursor-pointer">
           <IoIosNotifications />
@@ -27,24 +27,11 @@ const Data = () => {
       <div>
         <Form />
       </div>
-      <div>
-        <h2 className="text-2xl font-semibold mt-10 mb-4">Tasks</h2>
-        {/* List of tasks to be displayed here */}
+      <div className="grid grid-cols-3 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mt-10">
         {loading ? (
           <p>Loading...</p>
         ) : (
-          <ul>
-            {res.map((task) => (
-              <li key={task.dataKey} className="mb-4">
-                <p>Name: {task.name}</p>
-                <p>Deadline: {task.deadline.toString()}</p>
-                <p>Tag: {task.tag.join(", ")}</p>
-                <p>Description: {task.desc}</p>
-                <p>Link: {task.link}</p>
-                <p>Created At: {task.createdAt.toString()}</p>
-              </li>
-            ))}
-          </ul>
+          res.map((task) => <TaskCard key={task.dataKey} task={task} />)
         )}
       </div>
     </div>
