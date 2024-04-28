@@ -1,20 +1,27 @@
 import React, { useState } from "react";
+import useFirestore from "../Hooks/useFirestore";
+import { useAuth0 } from "@auth0/auth0-react";
 
-const Form = ({ onSubmit }) => {
+const Form = () => {
+  // Design to change
+
+  const { uploadTask } = useFirestore();
+  const { user } = useAuth0();
+
   const [formData, setFormData] = useState({
     name: "",
     date: "",
     time: "",
     tag: "",
     desc: "",
-    link: ""
+    link: "",
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -23,24 +30,21 @@ const Form = ({ onSubmit }) => {
     const formattedData = {
       ...formData,
       deadline: new Date(`${formData.date}T${formData.time}`),
-      tag: formData.tag.split(",").map(tag => tag.trim()),
+      tag: formData.tag.split(",").map((tag) => tag.trim()),
     };
-    onSubmit(formattedData);
 
-    setFormData({
-      name: "",
-      date: "",
-      time: "",
-      tag: "",
-      desc: "",
-      link: ""
-    });
+    uploadTask(formattedData, user.nickname);
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      <h2 className="mt-10 mb-6 text-3xl font-semibold text-gray-800">
+        Add New Task
+      </h2>
       <div>
-        <label className="block text-sm font-medium text-gray-700">Work Name</label>
+        <label className="block text-sm font-medium text-gray-700">
+          Work Name
+        </label>
         <input
           type="text"
           name="name"
@@ -52,7 +56,9 @@ const Form = ({ onSubmit }) => {
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700">Date</label>
+          <label className="block text-sm font-medium text-gray-700">
+            Date
+          </label>
           <input
             type="date"
             name="date"
@@ -63,7 +69,9 @@ const Form = ({ onSubmit }) => {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Time</label>
+          <label className="block text-sm font-medium text-gray-700">
+            Time
+          </label>
           <input
             type="time"
             name="time"
@@ -75,7 +83,9 @@ const Form = ({ onSubmit }) => {
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700">Tags (comma-separated)</label>
+        <label className="block text-sm font-medium text-gray-700">
+          Tags (comma-separated)
+        </label>
         <input
           type="text"
           name="tag"
@@ -86,7 +96,9 @@ const Form = ({ onSubmit }) => {
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700">Description</label>
+        <label className="block text-sm font-medium text-gray-700">
+          Description
+        </label>
         <textarea
           name="desc"
           value={formData.desc}

@@ -43,7 +43,7 @@ const useFirestore = () => {
       );
       onSnapshot(q, (querySnapshot) => {
         const d = [];
-        querySnapshot.forEach((data) => {
+        querySnapshot.forEach((doc) => {
           const dataKey = doc.id;
           const name = doc.data().name;
           const deadline = doc.data().deadline;

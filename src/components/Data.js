@@ -6,34 +6,29 @@ import Form from "./Form";
 
 const Data = () => {
   const { user } = useAuth0();
-  const { res, uploadTask, loading, getData } = useFirestore();
+  const { res, loading, getData } = useFirestore();
 
   useEffect(() => {
     getData(user.nickname);
     console.log(res);
   }, []);
 
-  const handleSubmit = (formData) => {
-    // Call the uploadTask function with formData and user.nickname
-    uploadTask(formData, user.nickname);
-  };
-
   return (
     <div className="w-[80%] mx-auto my-20">
       <div className="mb-10 flex justify-between">
         <p className="text-4xl font-semibold">
-          <span className="text-gray-700 font-normal">Welcome</span>, {user.nickname}
+          <span className="text-gray-700 font-normal">Welcome</span>,{" "}
+          {user.nickname}
         </p>
         <p className="text-4xl font-semibold content-center cursor-pointer">
           <IoIosNotifications />
         </p>
       </div>
       <div>
-        <Form onSubmit={handleSubmit} />
-        {/* Here should be form, where user will enter Work Name, Date and Time, Importance Level and (links and description not Mandatory) */}
+        <Form />
       </div>
       <div>
-        <h2 className="text-2xl font-semibold mb-4">Tasks</h2>
+        <h2 className="text-2xl font-semibold mt-10 mb-4">Tasks</h2>
         {/* List of tasks to be displayed here */}
         {loading ? (
           <p>Loading...</p>
