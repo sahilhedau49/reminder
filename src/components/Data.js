@@ -18,7 +18,8 @@ const Data = () => {
     <div className="w-[80%] mx-auto my-20">
       <div className="mb-10 flex justify-between">
         <p className="text-4xl font-semibold">
-          <span className="text-gray-700 font-normal">Welcome</span>, {user.nickname}
+          <span className="text-gray-700 font-normal">Welcome</span>,{" "}
+          {user.name}
         </p>
         <p className="text-4xl font-semibold content-center cursor-pointer">
           <IoIosNotifications />
