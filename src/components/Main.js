@@ -6,7 +6,7 @@ import Info from "./Info";
 const Main = () => {
   const { isAuthenticated } = useAuth0();
 
-  return <div>{isAuthenticated ? <Data /> : <Info />}</div>;
+  return <div >{isAuthenticated ? <Data /> : <Info />}</div>;
 };
 
 export default Main;
