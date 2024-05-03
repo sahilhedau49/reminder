@@ -35,6 +35,17 @@ const useFirestore = () => {
     }
   };
 
+  const editTask = async (data, dataKey, id) => {
+    await setDoc(doc(db, "userData", id, "data", dataKey), {
+      name: data.name,
+      deadline: data.deadline,
+      tag: data.tag,
+      desc: data.desc,
+      link: data.link,
+      createdAt: new Date(),
+    });
+  };
+
   const getData = async (id) => {
     try {
       const q = query(
@@ -67,6 +78,7 @@ const useFirestore = () => {
     loading,
     deleteTask,
     getData,
+    editTask,
   };
 };
 
