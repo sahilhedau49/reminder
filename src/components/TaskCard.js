@@ -7,7 +7,8 @@ const TaskCard = ({ task }) => {
   const { user } = useAuth0();
 
   const [deadlineText, setDeadlineText] = useState("");
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [cardState, setCardState] = useState(0);
   useEffect(() => {
     const timer = setInterval(() => {
       const now = new Date().getTime();
@@ -15,6 +16,7 @@ const TaskCard = ({ task }) => {
       const distance = deadline - now;
       if (distance < 0) {
         setDeadlineText("Expired");
+        setCardState(1); // if the card is expired (gray)
       } else if (distance < 86400000) {
         // Less than 1 day remaining
         const hours = Math.floor(
@@ -23,14 +25,45 @@ const TaskCard = ({ task }) => {
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
         setDeadlineText(`${hours}h ${minutes}m ${seconds}s`);
+        setCardState(2) // if card is < 1 day remaining (danger/red color)
       } else {
         // More than 1 day remaining
         const deadlineDate = task.deadline.toDate();
-        setDeadlineText(deadlineDate.toLocaleString());
+        setDeadlineText(formatDate(deadlineDate));
+        // Else same color only
       }
     }, 1000);
     return () => clearInterval(timer);
-  }, [task.deadline]);
+  },);
+
+  const formatDate = (date) => {
+    const day = date.getDate();
+    const monthIndex = date.getMonth();
+    const year = date.getFullYear();
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"];
+    return `${day}${ordinalSuffix(day)} ${monthNames[monthIndex]} ${year}`;
+  };
+
+  const ordinalSuffix = (day) => {
+    if (day % 10 === 1 && day !== 11) {
+      return "st";
+    } else if (day % 10 === 2 && day !== 12) {
+      return "nd";
+    } else if (day % 10 === 3 && day !== 13) {
+      return "rd";
+    } else {
+      return "th";
+    }
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   const handleDelete = () => {
     deleteTask(task.dataKey, user.nickname);
@@ -53,20 +86,57 @@ const TaskCard = ({ task }) => {
   };
 
   return (
-    <div className="max-w-xs bg-white shadow-md rounded-lg overflow-hidden mx-auto mb-8">
-      <div className="px-6 py-4">
-        <div className="font-bold text-xl mb-2">{task.name}</div>
-        <p className="text-gray-600 mb-2">Deadline: {deadlineText}</p>
-        <p className="text-gray-600 mb-2">Tags: {task.tag.join(", ")}</p>
-        <p className="text-gray-600 mb-2">Description: {task.desc}</p>
-        <p className="text-gray-600 mb-2">Link: {task.link}</p>
-        <p className="text-gray-600">Created At: {task.createdAt.toString()}</p>
+    < >
+      <div className={`w-[90%] shadow-md rounded-lg overflow-hidden mx-auto mb-8 ${cardState === 1 ? 'bg-gray-200' : cardState === 2 ? 'bg-red-200' : 'bg-[#FFFBF5]'}`} onClick={openModal}>
+        <div className="px-6 py-4 h-full">
+          <div className="flex justify-between items-center mb-2">
+              <div className="font-bold text-xl mb-2">{task.name}</div>
+              <div className="text-gray-600 mb-2 flex flex-row"><p className="mt-[5px] mr-1"><FaRegClock /></p><p>{deadlineText} </p></div>
+          </div>
+          <div className="mb-2">
+            {/* <p className="text-gray-600 mb-1">Tags</p> */}
+            {task.tag.map((tag, index) => (
+              <span key={index} className={`inline-block rounded-lg px-3 py-1 text-sm font-semibold mr-2 mb-2 ${cardState === 1 ? 'bg-gray-100 text-gray-700' : 'text-[#7743DB] bg-[#f5ebfb]'}`}>
+                {tag}
+              </span>
+            ))}
+          </div>
+          <p className="text-black mb-2"><strong>Link:</strong> <a href={task.link} className="transition hover:text-[#0e8bff]" rel="noreferrer" target="_blank">{task.link}</a></p>
+        </div>
       </div>
-      <div className="flex justify-between mx-4">
-        <button onClick={handleDelete}>Delete</button>
-        <button onClick={handleEdit}>Edit</button>
-      </div>
-    </div>
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white rounded-lg p-8 w-1/3 relative">
+            <button
+              onClick={closeModal}
+              className="absolute top-2 right-2 text-gray-600 hover:text-gray-800"
+            >
+              <FaTimes />
+            </button>
+            <div className="font-bold text-xl mb-2">{task.name}</div>
+            <div className="text-gray-600 mb-2 flex flex-row"> <p className="mt-[5px] mr-1 font-bold"><FaRegClock /></p> <strong>Deadline</strong> : <p className="ml-2">{task.deadline.toDate().toLocaleString("en-IN")}</p></div>
+            <div className="mb-2">
+              {/* <p className="text-gray-600 mb-1">Tags:</p> */}
+              {task.tag.map((tag, index) => (
+                <span key={index} className="inline-block rounded-lg px-3 py-1 text-sm font-semibold text-[#7743DB] bg-[#f5ebfb] mr-2 mb-2">
+                  {tag}
+                </span>
+              ))}
+            </div>
+            <div className="mb-2 ">
+              <p className="text-black font-bold mb-2">Description:<br/></p>
+              <p className="text-gray-600 mb-2 overflow-y-auto max-h-60">{task.desc}</p>
+            </div>
+            <p className="text-black mb-2"><strong>Link:</strong> <a href={task.link} className="transition hover:text-[#0e8bff]" rel="noreferrer" target="_blank">{task.link}</a></p>
+            <p className="text-gray-400 text-sm relative top-8">Created At: {task.createdAt.toLocaleString("en-IN")}</p>
+            <div className="flex justify-end mt-4">
+              <FaEdit className="text-gray-600 cursor-pointer mr-2" />
+              <FaTrashAlt className="text-gray-600 cursor-pointer" />
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

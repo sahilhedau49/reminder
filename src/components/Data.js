@@ -59,7 +59,7 @@ const Data = () => {
         </div>
         {isFormOpen && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-            <div ref={modalRef} className="bg-white rounded-lg p-8 max-w-md relative">
+            <div ref={modalRef} className="bg-white rounded-lg p-8 w-1/3 relative">
               <button
                 onClick={closeFormModal}
                 className="absolute top-2 right-2 text-gray-600 hover:text-gray-800"
