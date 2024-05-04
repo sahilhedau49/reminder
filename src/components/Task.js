@@ -13,7 +13,7 @@ const Task = () => {
   }, []);
 
   return (
-    <div className="grid grid-cols-3 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mt-10">
+    <div className="grid grid-cols-3 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-10 mt-10">
       {loading ? (
         <p>Loading...</p>
       ) : (
