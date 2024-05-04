@@ -102,7 +102,7 @@ const TaskCard = ({ task }) => {
   return (
     <>
       <div
-        className={`w-[90%] shadow-md rounded-lg overflow-hidden mx-auto mb-8 ${
+        className={`w-[100%] shadow-md rounded-lg overflow-hidden mx-auto ${
           cardState === 1
             ? "bg-gray-200"
             : cardState === 2
@@ -113,7 +113,7 @@ const TaskCard = ({ task }) => {
       >
         <div className="px-6 py-4 h-full">
           <div className="flex justify-between items-center mb-2">
-            <div className="font-bold text-xl mb-2">{task.name}</div>
+            <div className="font-bold w-[60%] text-xl mb-2">{task.name}</div>
             <div className="text-gray-600 mb-2 flex flex-row">
               <p className="mt-[5px] mr-1">
                 <FaRegClock />

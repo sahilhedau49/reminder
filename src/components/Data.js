@@ -2,19 +2,13 @@ import React, { useState, useEffect, useRef } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { IoIosNotifications } from "react-icons/io";
 import { FaPlus, FaTimes } from "react-icons/fa"; // Importing icons
-import useFirestore from "../Hooks/useFirestore";
-import TaskCard from "./TaskCard";
 import Form from "./Form";
+import Task from "./Task";
 
 const Data = () => {
   const { user } = useAuth0();
-  const { res, loading, getData } = useFirestore();
   const [isFormOpen, setIsFormOpen] = useState(false);
   const modalRef = useRef(null);
-
-  useEffect(() => {
-    getData(user.nickname);
-  }, [user]);
 
   const openFormModal = () => {
     setIsFormOpen(true);
@@ -74,12 +68,8 @@ const Data = () => {
           </div>
         )}
       </div>
-      <div className="grid grid-cols-3 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mt-10">
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          res.map((task) => <TaskCard key={task.dataKey} task={task} />)
-        )}
+      <div>
+        <Task />
       </div>
     </div>
   );
