@@ -14,8 +14,7 @@ const Data = () => {
 
   useEffect(() => {
     getData(user.nickname);
-    console.log(res);
-  }, []);
+  }, [user]);
 
   const openFormModal = () => {
     setIsFormOpen(true);
@@ -42,9 +41,10 @@ const Data = () => {
     <div className="w-[80%] mx-auto my-20">
       <div className="mb-10 flex justify-between">
         <p className="text-4xl font-semibold">
-          <span className="text-gray-700 font-normal">Welcome</span>, {user.name}
+          <span className="text-gray-700 font-normal">Welcome</span>,{" "}
+          {user.name}
         </p>
-        <p className="text-4xl font-semibold content-center cursor-pointer"  >
+        <p className="text-4xl font-semibold content-center cursor-pointer">
           <IoIosNotifications />
         </p>
       </div>
@@ -59,12 +59,15 @@ const Data = () => {
         </div>
         {isFormOpen && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-            <div ref={modalRef} className="bg-white rounded-lg p-8 w-1/3 relative">
+            <div
+              ref={modalRef}
+              className="bg-white rounded-lg p-8 w-1/3 relative"
+            >
               <button
                 onClick={closeFormModal}
-                className="absolute top-2 right-2 text-gray-600 hover:text-gray-800"
+                className="absolute top-4 text-xl right-4 text-gray-600 hover:text-gray-800"
               >
-                <FaTimes /> 
+                <FaTimes />
               </button>
               <Form />
             </div>

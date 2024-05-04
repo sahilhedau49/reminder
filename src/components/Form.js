@@ -38,7 +38,7 @@ const Form = () => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <h2 className="mt-10 mb-6 text-3xl font-semibold text-gray-800">
+      <h2 className="mb-6 text-3xl font-semibold text-gray-800">
         Add New Task
       </h2>
       <div>
