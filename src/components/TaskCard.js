@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
 import useFirestore from "../Hooks/useFirestore";
 import { useAuth0 } from "@auth0/auth0-react";
+import React, { useState, useEffect } from "react";
+import { FaEdit, FaTrashAlt, FaTimes, FaRegClock } from "react-icons/fa";
 
 const TaskCard = ({ task }) => {
   const { deleteTask, editTask } = useFirestore();
