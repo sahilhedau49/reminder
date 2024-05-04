@@ -3,6 +3,7 @@ import { FaEdit, FaTrashAlt, FaTimes, FaRegClock } from "react-icons/fa";
 import useFirestore from "../Hooks/useFirestore";
 import { useAuth0 } from "@auth0/auth0-react";
 import Form from "./Form";
+import toast from "react-hot-toast";
 
 const TaskCard = ({ task }) => {
   // Destructure functions from useFirestore hook
@@ -94,6 +95,7 @@ const TaskCard = ({ task }) => {
   const handleDelete = () => {
     deleteTask(task.dataKey, user.nickname);
     closeModal(); // Close modal after deleting
+    toast.success('Deleted the Card')
   };
 
   // Handle edit task function
@@ -191,7 +193,6 @@ const TaskCard = ({ task }) => {
           <button onClick={closeEditModal} className="absolute text-xl top-4 right-4 text-gray-600 hover:text-gray-800">
             <FaTimes />
           </button>
-          <div className="font-bold text-xl mb-2">Edit Task</div>
           <Form taskToEdit={editedTask} onSubmit={handleEdit} />
         </div>
       </div>

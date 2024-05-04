@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"; // Importing useEffect and useState
 import useFirestore from "../Hooks/useFirestore";
 import { useAuth0 } from "@auth0/auth0-react";
+import toast from "react-hot-toast";
 
 const Form = ({ taskToEdit, onSubmit }) => {
   const { uploadTask } = useFirestore();
@@ -44,15 +45,25 @@ const Form = ({ taskToEdit, onSubmit }) => {
 
     if (onSubmit) {
       onSubmit(formattedData);
+      toast.success('Edited the Card!')
     } else {
       uploadTask(formattedData, user.nickname);
+      toast.success('Added the Card!')
+      setFormData(() => ({
+        name:  "",
+        date:  "",
+        time:  "",
+        tag:   "",
+        desc:  "",
+        link:  "",
+      }))
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <h2 className="mb-6 text-3xl font-semibold text-gray-800">
-        Add New Task
+        {onSubmit ? "Edit Task" : "Add New Task"}
       </h2>
       <div>
         <label className="block text-sm font-medium text-gray-700">
