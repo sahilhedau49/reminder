@@ -67,7 +67,12 @@ const TaskCard = ({ task }) => {
   };
 
   const handleDelete = () => {
+    console.log("Deketed start");
+    console.log(task.dataKey);
+    console.log(user.nickname);
     deleteTask(task.dataKey, user.nickname);
+    console.log("Deketed end");
+
   };
 
   const handleEdit = () => {
@@ -132,7 +137,7 @@ const TaskCard = ({ task }) => {
             <p className="text-gray-400 text-sm relative top-8">Created At: {task.createdAt.toLocaleString("en-IN")}</p>
             <div className="flex justify-end mt-4">
               <FaEdit className="text-gray-600 cursor-pointer mr-2" />
-              <FaTrashAlt className="text-gray-600 cursor-pointer" />
+              <FaTrashAlt className="text-gray-600 cursor-pointer" onClick={() => {handleDelete()}}/>
             </div>
           </div>
         </div>

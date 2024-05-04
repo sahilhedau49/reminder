@@ -6,7 +6,6 @@ import { Auth0Provider } from "@auth0/auth0-react";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <div style={{background:"#FFFBF5"}}>
 
   <Auth0Provider
     domain={process.env.React_App_Auth0_Domain}
@@ -17,6 +16,5 @@ root.render(
   >
     <App />
   </Auth0Provider>
-  </div>
 
 );
