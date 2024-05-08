@@ -9,7 +9,6 @@ const Task = () => {
 
   useEffect(() => {
     getData(user.nickname);
-    console.log(res);
   }, []);
 
   return (
