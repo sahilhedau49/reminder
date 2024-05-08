@@ -1,24 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react"; // Importing useEffect and useState
 import useFirestore from "../Hooks/useFirestore";
 import { useAuth0 } from "@auth0/auth0-react";
+import toast from "react-hot-toast";
 
-const Form = () => {
-  // Design to change
-
+const Form = ({ taskToEdit, onSubmit }) => {
   const { uploadTask } = useFirestore();
   const { user } = useAuth0();
 
   const [formData, setFormData] = useState({
-    name: "",
-    date: "",
-    time: "",
-    tag: "",
-    desc: "",
-    link: "",
+    name: taskToEdit ? taskToEdit.name : "",
+    date: taskToEdit ? taskToEdit.deadline.toDate().toISOString().substr(0, 10) : "",
+    time: taskToEdit ? taskToEdit.deadline.toDate().toISOString().substr(11, 5) : "",
+    tag: taskToEdit ? taskToEdit.tag.join(", ") : "",
+    desc: taskToEdit ? taskToEdit.desc : "",
+    link: taskToEdit ? taskToEdit.link : "",
   });
+
+  // Update editedTask state when form data changes
+  // useEffect(() => {
+  //   setEditedTask({
+  //     ...taskToEdit,
+  //     ...formData,
+  //     deadline: new Date(`${formData.date}T${formData.time}`),
+  //     tag: formData.tag.split(",").map((tag) => tag.trim()),
+  //   });
+  // }, [formData, taskToEdit]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    console.log(name);
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -33,13 +43,27 @@ const Form = () => {
       tag: formData.tag.split(",").map((tag) => tag.trim()),
     };
 
-    uploadTask(formattedData, user.nickname);
+    if (onSubmit) {
+      onSubmit(formattedData);
+      toast.success('Edited the Card!')
+    } else {
+      uploadTask(formattedData, user.nickname);
+      toast.success('Added the Card!')
+      setFormData(() => ({
+        name:  "",
+        date:  "",
+        time:  "",
+        tag:   "",
+        desc:  "",
+        link:  "",
+      }))
+    }
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <h2 className="mb-6 text-3xl font-semibold text-gray-800">
-        Add New Task
+        {onSubmit ? "Edit Task" : "Add New Task"}
       </h2>
       <div>
         <label className="block text-sm font-medium text-gray-700">
@@ -121,7 +145,7 @@ const Form = () => {
           type="submit"
           className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
-          Submit
+        {onSubmit ? "Edit" : "Submit"}
         </button>
       </div>
     </form>
