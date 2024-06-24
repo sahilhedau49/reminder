@@ -5,16 +5,13 @@ import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
-      <BrowserRouter>
-      <Toaster 
-        position="top-right"
-        reverseOrder={false}
-      />
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Main />} />
-        </Routes>
-      </BrowserRouter>
+    <BrowserRouter>
+      <Toaster position="top-right" reverseOrder={false} />
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Main />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
