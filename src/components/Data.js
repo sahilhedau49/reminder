@@ -6,6 +6,7 @@ import Form from "./Form";
 import Task from "./Task";
 import useFirestore from "../Hooks/useFirestore";
 import InAppNotification from "./InAppNotification";
+import useNotification from "../Hooks/useNotification";
 
 const Data = () => {
   const { user } = useAuth0();
@@ -13,6 +14,7 @@ const Data = () => {
   const [isNotiOpen, setIsNotiOpen] = useState(false);
   const { res, getData } = useFirestore();
   const modalRef = useRef(null);
+  const { notiCount } = useNotification();
 
   useEffect(() => {
     getData(user.nickname);
@@ -47,11 +49,16 @@ const Data = () => {
           {user.name}
         </p>
         <p
-          className="text-4xl font-semibold content-center cursor-pointer"
+          className="text-4xl font-semibold content-center cursor-pointer relative"
           onClick={() => {
             setIsNotiOpen(true);
           }}
         >
+          {notiCount > 0 && (
+            <span className="px-2 text-base rounded-full bg-red-500 absolute -top-1 -right-1">
+              {notiCount}
+            </span>
+          )}
           <IoIosNotifications />
         </p>
       </div>
