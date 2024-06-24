@@ -1,42 +1,9 @@
-import { useEffect, useState } from "react";
+import React from "react";
 import { ImNotification } from "react-icons/im";
+import useNotification from "../Hooks/useNotification";
 
-const InAppNotification = ({ data }) => {
-  const [noti, setNoti] = useState([]);
-  const [currentTime, setCurrentTime] = useState();
-
-  useEffect(() => {
-    const currentTime = new Date();
-    setCurrentTime(currentTime);
-
-    const filteredData = data.filter((task) => {
-      const deadline = task.deadline.toDate().getTime();
-      const gap = deadline - currentTime;
-      return gap < 86400000;
-    });
-
-    const sortByHoursAgo = (task1, task2) => {
-      const timeDifference1 =
-        task1.deadline.toDate() - currentTime < 0
-          ? Math.ceil((currentTime - task1.deadline.toDate()) / 3600000)
-          : Math.floor(
-              (86400000 - (task1.deadline.toDate() - currentTime)) / 3600000
-            );
-
-      const timeDifference2 =
-        task2.deadline.toDate() - currentTime < 0
-          ? Math.ceil((currentTime - task2.deadline.toDate()) / 3600000)
-          : Math.floor(
-              (86400000 - (task2.deadline.toDate() - currentTime)) / 3600000
-            );
-
-      return timeDifference1 - timeDifference2;
-    };
-
-    filteredData.sort(sortByHoursAgo);
-
-    setNoti(filteredData);
-  }, [data]);
+const InAppNotification = () => {
+  const { noti, currentTime } = useNotification();
 
   return (
     <div>

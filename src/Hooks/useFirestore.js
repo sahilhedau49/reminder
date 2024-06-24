@@ -65,6 +65,7 @@ const useFirestore = () => {
           d.push({ dataKey, name, deadline, tag, link, desc, createdAt });
         });
         setRes(d);
+        console.log("first");
         setLoading(false);
       });
     } catch (error) {
