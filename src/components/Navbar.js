@@ -11,7 +11,7 @@ const Navbar = () => {
     <div className="flex border-b-2 border-slate-950 justify-between overflow-x-hidden py-6 px-24 md:px-2">
       <div>
         <Link to={"/"}>
-          <p className="text-2xl font-semibold">Reminder App</p>
+          <p className="text-2xl font-semibold">RemindMe</p>
         </Link>
       </div>
       <div
